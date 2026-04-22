@@ -1948,11 +1948,16 @@ function(a,b,c){if(!Vd(b))throw Error(m(200));return Wd(null,a,b,!1,c)};Q.unmoun
     filter: blur(0);
   }
 
-  /* Layout principale: margin-left solo su desktop (sopra 768px).
-     Su mobile la sidebar è off-canvas e non occupa spazio. */
+  /* Layout principale.
+     Sidebar effettiva = 11.5rem (width forzata da aside.sidebar !important, linea ~1432).
+     Storicamente sidebar era in flusso → main partiva a 11.5rem + aveva ml-[11.5rem]
+     → contenuto visuale a 23rem dal bordo viewport.
+     Ora sidebar è position:fixed (out of flow) per evitare lo "spazio fantasma" mobile:
+     per preservare il layout desktop originale usiamo margin-left: 23rem sul main
+     (11.5rem sidebar + 11.5rem gap "arcano"). */
   .app-main-layout {
-    margin-left: 11.5rem;
-    max-width: calc(100vw - 11.5rem);
+    margin-left: 23rem;
+    max-width: calc(100vw - 23rem);
   }
   @media (max-width: 768px) {
     .app-main-layout {
@@ -1961,14 +1966,17 @@ function(a,b,c){if(!Vd(b))throw Error(m(200));return Wd(null,a,b,!1,c)};Q.unmoun
       width: 100vw !important;
     }
   }
-  /* Assicura che il contenuto sia sopra al cosmic-bg */
-  aside.sidebar, main.app-main, footer, .mobile-menu-btn, .mobile-nav-overlay {
+  /* Assicura che il contenuto sia sopra al cosmic-bg.
+     NB: NON toccare `position` della sidebar — deve restare `fixed` (da Tailwind .fixed).
+     Se si imposta `position: relative` qui, la sidebar rientra nel flusso e occupa
+     spazio (18rem = 288px) nel flex container, creando lo "spazio fantasma" su mobile. */
+  main.app-main, footer {
     position: relative;
     z-index: 2;
   }
-  aside.sidebar { z-index: 15; }
-  .mobile-menu-btn { z-index: 90; }
-  .mobile-nav-overlay { z-index: 80; }
+  aside.sidebar { position: fixed !important; z-index: 15; }
+  .mobile-menu-btn { position: fixed !important; z-index: 90; }
+  .mobile-nav-overlay { position: fixed !important; z-index: 80; }
   .cosmic-bg { z-index: 0; }
 
   /* Respect users who prefer less motion */
