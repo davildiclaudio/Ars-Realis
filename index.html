@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="it">
 <head>
 <meta charset="UTF-8" />
@@ -1271,6 +1271,69 @@
   .stagger > *:nth-child(4){ animation-delay: 240ms; }
   .stagger > *:nth-child(5){ animation-delay: 300ms; }
   .stagger > *:nth-child(6){ animation-delay: 360ms; }
+
+  /* === Blur & zoom — animazioni tipografiche === */
+  @keyframes focusReveal {
+    0%   { filter: blur(22px); opacity: 0;   transform: scale(0.78); letter-spacing: 0.12em; }
+    55%  { filter: blur(6px);  opacity: .9;  transform: scale(1.09); letter-spacing: 0.015em; }
+    100% { filter: blur(0);    opacity: 1;   transform: scale(1);    letter-spacing: 0; }
+  }
+  @keyframes focusBreath {
+    0%, 100% { filter: blur(0) drop-shadow(0 0 0 rgba(229,70,102,0)); transform: scale(1); }
+    50%      { filter: blur(.45px) drop-shadow(0 0 14px rgba(229,70,102,.35)); transform: scale(1.025); }
+  }
+  @keyframes blurZoomIn {
+    from { filter: blur(14px); opacity: 0; transform: scale(0.92); }
+    to   { filter: blur(0);    opacity: 1; transform: scale(1); }
+  }
+  @keyframes blurZoomOut {
+    from { filter: blur(0);    opacity: 1; transform: scale(1); }
+    to   { filter: blur(10px); opacity: 0; transform: scale(1.08); }
+  }
+  @keyframes zoomBreath {
+    0%, 100% { transform: scale(1); }
+    50%      { transform: scale(1.018); }
+  }
+  @keyframes blurPulse {
+    0%, 100% { filter: blur(0); }
+    50%      { filter: blur(.55px); }
+  }
+  @keyframes blurFocusLoop {
+    0%, 100% { filter: blur(0) drop-shadow(0 0 0 rgba(201,169,106,0)); transform: scale(1); }
+    50%      { filter: blur(.35px) drop-shadow(0 0 10px rgba(201,169,106,.25)); transform: scale(1.01); }
+  }
+
+  /* "dentro" — sostituisce lo shimmer oro con un focus-reveal cremisi */
+  .focus-reveal {
+    display: inline-block;
+    animation:
+      focusReveal 2.4s cubic-bezier(.2,.7,.2,1) both,
+      focusBreath 7s ease-in-out 2.4s infinite;
+    will-change: filter, transform, letter-spacing;
+    transform-origin: center;
+  }
+
+  /* Utility riusabili */
+  .anim-blur-zoom-in  { animation: blurZoomIn 900ms cubic-bezier(.2,.7,.2,1) both; }
+  .anim-blur-zoom-out { animation: blurZoomOut 600ms cubic-bezier(.4,0,.8,1) both; }
+  .anim-zoom-breath   { animation: zoomBreath 7s ease-in-out infinite; transform-origin: center; will-change: transform; }
+  .anim-blur-pulse    { animation: blurPulse 5.5s ease-in-out infinite; will-change: filter; }
+  .anim-focus-loop    { animation: blurFocusLoop 6s ease-in-out infinite; will-change: filter, transform; }
+
+  /* Hover: lieve zoom-in con sfocatura residua che si rimuove */
+  .hover-blur-zoom { transition: transform .6s cubic-bezier(.2,.7,.2,1), filter .6s ease; }
+  .hover-blur-zoom:hover { transform: scale(1.025); filter: drop-shadow(0 8px 24px rgba(201,169,106,.18)); }
+
+  /* Rispetto delle preferenze utente */
+  @media (prefers-reduced-motion: reduce) {
+    .focus-reveal,
+    .anim-blur-zoom-in,
+    .anim-blur-zoom-out,
+    .anim-zoom-breath,
+    .anim-blur-pulse,
+    .anim-focus-loop { animation: none !important; filter: none !important; transform: none !important; opacity: 1 !important; }
+    .hover-blur-zoom { transition: none; }
+  }
 
   .glow-border {
     box-shadow: 0 0 0 1px rgba(201,169,106,0.18), 0 20px 60px -20px rgba(169,36,58,0.35);
@@ -3404,6 +3467,12 @@ function App() {
     label: 'Risorse PDF',
     sub: 'Materiali scaricabili',
     emoji: '📚'
+  }, {
+    id: 'oracolo',
+    num: '10',
+    label: 'Oracolo',
+    sub: "Consigli dall'Universo",
+    emoji: '🌟'
   }];
   return /*#__PURE__*/React.createElement("div", {
     className: "flex min-h-screen noise"
@@ -3443,7 +3512,7 @@ function App() {
     key: route
   }, route === 'home' && /*#__PURE__*/React.createElement(Home, {
     go: handleSetRoute
-  }), route === 'storia' && /*#__PURE__*/React.createElement(Storia, null), route === 'tecniche' && /*#__PURE__*/React.createElement(Tecniche, null), route === 'glossario' && /*#__PURE__*/React.createElement(Glossario, null), route === 'diario' && /*#__PURE__*/React.createElement(Diario, null), route === 'roadmap' && /*#__PURE__*/React.createElement(Roadmap, null), route === 'chat' && /*#__PURE__*/React.createElement(Chat, null), route === 'flashcard' && /*#__PURE__*/React.createElement(FlashCard, null), route === 'audio' && /*#__PURE__*/React.createElement(Audio, null), route === 'risorse' && /*#__PURE__*/React.createElement(Risorse, null)), /*#__PURE__*/React.createElement(Footer, null)));
+  }), route === 'storia' && /*#__PURE__*/React.createElement(Storia, null), route === 'tecniche' && /*#__PURE__*/React.createElement(Tecniche, null), route === 'glossario' && /*#__PURE__*/React.createElement(Glossario, null), route === 'diario' && /*#__PURE__*/React.createElement(Diario, null), route === 'roadmap' && /*#__PURE__*/React.createElement(Roadmap, null), route === 'chat' && /*#__PURE__*/React.createElement(Chat, null), route === 'flashcard' && /*#__PURE__*/React.createElement(FlashCard, null), route === 'audio' && /*#__PURE__*/React.createElement(Audio, null), route === 'risorse' && /*#__PURE__*/React.createElement(Risorse, null), route === 'oracolo' && /*#__PURE__*/React.createElement(Oracolo, null)), /*#__PURE__*/React.createElement(Footer, null)));
 }
 function Sidebar({
   nav,
@@ -3848,14 +3917,14 @@ function Home({
     className: "section-num mb-3",
     style: { position: 'relative', zIndex: 1 }
   }, "00 \xB7 CASA ", /*#__PURE__*/React.createElement("span", { className: "anim-float-slow", style: { marginLeft: 6 } }, "✨")), /*#__PURE__*/React.createElement("h1", {
-    className: "text-6xl serif leading-none mb-4",
+    className: "text-6xl serif leading-none mb-4 anim-blur-zoom-in",
     style: {
       letterSpacing: '-0.015em',
       position: 'relative',
       zIndex: 1
     }
   }, "Svegliarsi ", /*#__PURE__*/React.createElement("span", {
-    className: "italic shimmer-text",
+    className: "italic focus-reveal",
     style: {
       color: 'var(--crimson-bright)'
     }
@@ -3875,8 +3944,8 @@ function Home({
       color: 'var(--crimson-bright)'
     }
   }, "Tafti"), " (2018 \u2192 2025).")), /*#__PURE__*/React.createElement("div", {
-    className: "card p-8 mb-14 relative glow-border"
-  }, /*#__PURE__*/React.createElement("div", {
+    className: "card p-8 mb-14 relative glow-border anim-focus-loop"
+  },/*#__PURE__*/React.createElement("div", {
     className: "quote-mark absolute -top-2 left-4"
   }, "\u201C"), /*#__PURE__*/React.createElement("div", {
     className: "serif italic text-2xl leading-snug pl-12 pr-4",
@@ -3902,7 +3971,7 @@ function Home({
     className: "grid grid-cols-2 gap-5 mb-16"
   }, cards.map(c => /*#__PURE__*/React.createElement("div", {
     key: c.id,
-    className: "card card-hover hover-lift p-6 cursor-pointer anim-slide-up",
+    className: "card card-hover hover-lift hover-blur-zoom p-6 cursor-pointer anim-slide-up",
     onClick: () => go(c.id)
   }, /*#__PURE__*/React.createElement("div", {
     className: "flex items-baseline justify-between mb-3"
@@ -9596,6 +9665,202 @@ function resDbDel(id) {
     r.onerror = () => rej(r.error);
   }));
 }
+
+// ============================================================
+// ORACOLO — 78 aforismi "consigli dall'Universo"
+// ============================================================
+const ORACOLO = [
+  { n: 1, t: "Non volere. Lascia che la vita ti conduca." },
+  { n: 2, t: "Quando spingi troppo, la porta si chiude. Allenta, e si apre da sola." },
+  { n: 3, t: "Oggi puoi scegliere di non combattere nulla." },
+  { n: 4, t: "La tua calma è una tecnologia. Allenala." },
+  { n: 5, t: "Ciò che accetti si trasforma. Ciò che rifiuti si rinforza." },
+  { n: 6, t: "Smetti di giudicare: la mente capirà dopo ciò che il cuore già sa." },
+  { n: 7, t: "L'universo non ha fretta. Prendi esempio." },
+  { n: 8, t: "Se sei in ritardo, sei dove dovevi essere." },
+  { n: 9, t: "Il sorriso è la tua tecnica più potente di oggi." },
+  { n: 10, t: "Le persone difficili sono maestri camuffati." },
+  { n: 11, t: "Permettiti di riposare senza sensi di colpa." },
+  { n: 12, t: "Lo scopo della giornata è goderla, non sopravviverla." },
+  { n: 13, t: "Non forzare il fiume. Diventa il fiume." },
+  { n: 14, t: "Ciò che immagini con chiarezza ti sta già cercando." },
+  { n: 15, t: "Il miglior momento per essere grato è adesso." },
+  { n: 16, t: "I problemi non sono segnali di stop, sono deviazioni." },
+  { n: 17, t: "Respira tre volte prima di rispondere." },
+  { n: 18, t: "Il tuo valore non dipende dalla tua produttività." },
+  { n: 19, t: "Fidati: nulla di essenziale ti manca." },
+  { n: 20, t: "Se sei stanco, fai meno — non di più." },
+  { n: 21, t: "Ogni «no» chiude una porta per aprirne una migliore." },
+  { n: 22, t: "Il tuo unico compito è accorgerti di essere qui." },
+  { n: 23, t: "Guarda lo schermo della realtà senza recitare." },
+  { n: 24, t: "Nessuno è veramente contro di te — ognuno vive il proprio film." },
+  { n: 25, t: "La fretta è un pendolo. Esci." },
+  { n: 26, t: "Ciò che temi lo attiri. Ciò che ami lo incontri." },
+  { n: 27, t: "Non controllare il risultato. Controlla la direzione." },
+  { n: 28, t: "Le coincidenze sono l'universo che ti fa l'occhiolino." },
+  { n: 29, t: "Se qualcosa si complica, l'universo sta deviando per proteggerti." },
+  { n: 30, t: "Dare è ricevere. Ricevere è permettere." },
+  { n: 31, t: "Sei libero di cambiare idea. Oggi stesso." },
+  { n: 32, t: "Il corpo sa prima della testa. Ascoltalo." },
+  { n: 33, t: "Vivi come se tutto andasse bene — molto spesso succede." },
+  { n: 34, t: "Non c'è nulla di sbagliato in te. Non c'è mai stato." },
+  { n: 35, t: "Lascia andare la persona che eri ieri." },
+  { n: 36, t: "La pace è una scelta, prima di essere uno stato." },
+  { n: 37, t: "Se perdi qualcosa, stavi trattenendola troppo." },
+  { n: 38, t: "L'abbondanza arriva quando smetti di inseguirla." },
+  { n: 39, t: "Ogni persona che incontri ha qualcosa da insegnarti." },
+  { n: 40, t: "Non devi meritare. Devi permettere." },
+  { n: 41, t: "Il passato non decide il prossimo passo." },
+  { n: 42, t: "Fermati. Guarda. Respira. Continua." },
+  { n: 43, t: "Le giornate migliori sono quelle senza piano." },
+  { n: 44, t: "Quando non sai cosa fare, non fare nulla: il chiaro arriva." },
+  { n: 45, t: "Il silenzio è pieno di risposte, se smetti di parlare." },
+  { n: 46, t: "Sei lo sceneggiatore, non la vittima." },
+  { n: 47, t: "Ogni momento ti offre una nuova versione di te." },
+  { n: 48, t: "L'apprezzamento amplifica. Inizia da una cosa piccola." },
+  { n: 49, t: "Non farti trovare già stanco dal mattino." },
+  { n: 50, t: "Ridere è un atto sovversivo e guaritivo." },
+  { n: 51, t: "Ciò che cerchi fuori ti sta già aspettando dentro." },
+  { n: 52, t: "Puoi scegliere la versione gentile della tua giornata." },
+  { n: 53, t: "Non tutti gli inviti vanno accettati — specie quelli della mente." },
+  { n: 54, t: "Se arriva l'ansia, guardala e chiedile cosa vuole." },
+  { n: 55, t: "Il tuo tempo è sacro. Custodiscilo." },
+  { n: 56, t: "Nel dubbio, scegli ciò che ti fa respirare meglio." },
+  { n: 57, t: "Nulla di importante si decide di fretta." },
+  { n: 58, t: "Dì «grazie» anche quando non ti senti di doverlo." },
+  { n: 59, t: "La semplicità è eleganza nascosta." },
+  { n: 60, t: "Se tutti gridano, sussurra." },
+  { n: 61, t: "Amare sé stessi non è vanità: è fondamenta." },
+  { n: 62, t: "La fortuna è preparazione che incontra l'occasione rilassata." },
+  { n: 63, t: "Il perdono è un dono che fai a te stesso." },
+  { n: 64, t: "Non sei in ritardo sulla tua vita. Non esiste un calendario." },
+  { n: 65, t: "Ogni respiro è un «sì» alla vita." },
+  { n: 66, t: "Le cose belle accadono quando ti allenti." },
+  { n: 67, t: "Oggi è l'unico giorno su cui hai potere." },
+  { n: 68, t: "Libera le persone che ami dall'idea che ne hai." },
+  { n: 69, t: "Sbagliare è un permesso, non un problema." },
+  { n: 70, t: "Ciò che non può essere forzato può essere accolto." },
+  { n: 71, t: "Il coraggio è paura che ha imparato a camminare." },
+  { n: 72, t: "Prima di dire sì, senti dove lo senti nel corpo." },
+  { n: 73, t: "Le tue parole costruiscono mondi. Parla bene di te." },
+  { n: 74, t: "Dove guarda la tua attenzione, va la tua vita." },
+  { n: 75, t: "Non serve diventare. Serve tornare." },
+  { n: 76, t: "La bellezza è un atto di attenzione." },
+  { n: 77, t: "Il tuo scopo non è altrove. È in come stai qui." },
+  { n: 78, t: "Tutto è già ben orchestrato. Puoi rilassarti ora." }
+];
+
+function Oracolo() {
+  const STORAGE_KEY = 'ars-oracolo-lastDraw';
+  const [drawn, setDrawn] = useState(() => {
+    try { const s = localStorage.getItem(STORAGE_KEY); return s ? JSON.parse(s) : null; } catch (e) { return null; }
+  });
+  const [showAll, setShowAll] = useState(false);
+  const [animKey, setAnimKey] = useState(0);
+
+  const today = useMemo(() => {
+    const now = new Date();
+    const start = new Date(now.getFullYear(), 0, 0);
+    const diff = now - start;
+    const dayOfYear = Math.floor(diff / 86400000);
+    return ORACOLO[dayOfYear % ORACOLO.length];
+  }, []);
+
+  function pesca() {
+    let idx;
+    do { idx = Math.floor(Math.random() * ORACOLO.length); }
+    while (drawn && ORACOLO[idx].n === drawn.n && ORACOLO.length > 1);
+    const card = ORACOLO[idx];
+    setDrawn(card);
+    setAnimKey(function (k) { return k + 1; });
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(card)); } catch (e) {}
+  }
+
+  function clear() {
+    setDrawn(null);
+    setAnimKey(function (k) { return k + 1; });
+    try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+  }
+
+  function selectFromList(o) {
+    setDrawn(o);
+    setAnimKey(function (k) { return k + 1; });
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(o)); } catch (e) {}
+    if (typeof window !== 'undefined') { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+  }
+
+  const current = drawn || today;
+  const padN = (n) => ('00' + n).slice(-2);
+
+  return React.createElement('div', null,
+    React.createElement('div', { className: 'section-num mb-3' }, '10 · ORACOLO'),
+    React.createElement('h1', {
+      className: 'text-5xl serif leading-none mb-4 anim-blur-zoom-in',
+      style: { letterSpacing: '-0.015em' }
+    }, 'Consigli ', React.createElement('span', {
+      className: 'italic focus-reveal',
+      style: { color: 'var(--gold)' }
+    }, "dall'Universo"), '.'),
+    React.createElement('p', {
+      className: 'text-lg max-w-2xl leading-relaxed mb-10',
+      style: { color: 'var(--ink-dim)' }
+    }, '78 aforismi per attraversare la giornata con leggerezza. Pesca a intuito, oppure lascia che sia il giorno a scegliere per te.'),
+
+    React.createElement('div', {
+      key: animKey,
+      className: 'card p-10 mb-8 relative glow-border anim-focus-loop anim-blur-zoom-in'
+    },
+      React.createElement('div', { className: 'quote-mark absolute -top-2 left-4' }, '\u201C'),
+      React.createElement('div', {
+        className: 'section-num mb-3',
+        style: { paddingLeft: '1.5rem' }
+      }, 'N.' + padN(current.n)),
+      React.createElement('div', {
+        className: 'serif italic text-3xl leading-snug pl-6 pr-4',
+        style: { color: 'var(--ink)' }
+      }, current.t),
+      React.createElement('div', {
+        className: 'mt-6 pl-6 text-xs mono',
+        style: { color: 'var(--gold-dim)' }
+      }, drawn ? '\u2014 estratto da te' : '\u2014 consiglio del giorno · ruota a mezzanotte')
+    ),
+
+    React.createElement('div', { className: 'flex flex-wrap gap-3 mb-12' },
+      React.createElement('button', {
+        className: 'btn primary', onClick: pesca
+      }, '\u2726  Pesca un consiglio'),
+      drawn && React.createElement('button', {
+        className: 'btn', onClick: clear
+      }, 'Torna al consiglio del giorno'),
+      React.createElement('button', {
+        className: 'btn', onClick: function () { setShowAll(function (v) { return !v; }); }
+      }, showAll ? "Chiudi l'archivio" : 'Vedi tutti e 78')
+    ),
+
+    showAll && React.createElement('div', {
+      className: 'section-title mb-4'
+    }, React.createElement('span', { className: 'section-num' }, "ARCHIVIO COMPLETO"),
+       React.createElement('span', { className: 'section-rule' })),
+
+    showAll && React.createElement('div', {
+      className: 'grid grid-cols-2 gap-3 mb-10 anim-blur-zoom-in'
+    }, ORACOLO.map(function (o) {
+      const isCurrent = current && current.n === o.n;
+      return React.createElement('div', {
+        key: o.n,
+        className: 'card p-4 cursor-pointer hover-blur-zoom' + (isCurrent ? ' glow-border' : ''),
+        onClick: function () { selectFromList(o); }
+      },
+        React.createElement('div', { className: 'section-num mb-1' }, padN(o.n)),
+        React.createElement('div', {
+          className: 'serif text-base leading-snug',
+          style: { color: 'var(--ink-dim)' }
+        }, o.t)
+      );
+    }))
+  );
+}
+
 function Risorse() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
